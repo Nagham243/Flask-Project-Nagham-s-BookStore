@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ book.title }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        {% if book.image_filename %}
+        <img src="{{ url_for('static', filename='images/uploads/' + book.image_filename) }}" class="img-fluid rounded" alt="{{ book.title }}">
+        {% else %}
+        <div class="bg-light text-center py-5 rounded">
+            <i class="bi bi-book" style="font-size: 10rem;"></i>
+        </div>
+        {% endif %}
+    </div>
+    <div class="col-md-8">
+        <h1>{{ book.title }}</h1>
+
+        <div class="d-flex align-items-center mb-3">
+            <h4 class="mb-0">By: <a href="{{ url_for('authors.author_details', author_id=book.author.id) }}">{{ book.author.name }}</a></h4>
+
+            {% if current_user.is_authenticated and book.created_by == current_user.id %}
+            <div class="ms-auto">
+                <a href="{{ url_for('books.edit_book', book_id=book.id) }}" class="btn btn-outline-primary btn-sm">
+                    <i class="bi bi-pencil"></i> Edit
+                </a>
+                <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteBookModal">
+                    <i class="bi bi-trash"></i> Delete
+                </button>
+            </div>
+            {% endif %}
+        </div>
+
+        <hr>
+
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="border rounded p-3 text-center">
+                    <h5>Price</h5>
+                    <p class="lead mb-0">${{ book.price }}</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="border rounded p-3 text-center">
+                    <h5>Published</h5>
+                    <p class="lead mb-0">{{ book.publish_date.strftime('%B %d, %Y') }}</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="border rounded p-3 text-center">
+                    <h5>Age Group</h5>
+                    <p class="lead mb-0">{{ book.appropriate | title }}</p>
+                </div>
+            </div>
+        </div>
+
+        <p class="text-muted">Added on {{ book.added_at.strftime('%B %d, %Y') }}</p>
+    </div>
+</div>
+
+{% if current_user.is_authenticated and book.created_by == current_user.id %}
+<!-- Delete Book Modal -->
+<div class="modal fade" id="deleteBookModal" tabindex="-1" aria-labelledby="deleteBookModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteBookModalLabel">Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete "{{ book.title }}"? This action cannot be undone.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form action="{{ url_for('books.delete_book', book_id=book.id) }}" method="POST">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

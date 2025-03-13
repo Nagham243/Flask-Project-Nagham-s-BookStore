@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">User Profile</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4 text-center">
+                        <div class="profile-avatar">
+                            <i class="bi bi-person-circle" style="font-size: 6rem; color: var(--purple-primary);"></i>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <h2>{{ current_user.username }}</h2>
+                        <p><i class="bi bi-envelope"></i> {{ current_user.email }}</p>
+                        <p><i class="bi bi-calendar"></i> Member since: {{ current_user.created_at.strftime('%B %d, %Y') }}</p>
+
+                        <div class="mt-4">
+                            <h5>Your Activity</h5>
+                            <div class="row text-center">
+                                <div class="col-md-6">
+                                    <div class="activity-box">
+                                        <h3>{{ current_user.books|length }}</h3>
+                                        <p>Books Added</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="activity-box">
+                                        <h3>{{ current_user.authors|length }}</h3>
+                                        <p>Authors Added</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <a href="{{ url_for('books.add_book') }}" class="btn btn-primary">
+                                <i class="bi bi-plus-circle"></i> Add New Book
+                            </a>
+                            <a href="{{ url_for('authors.add_author') }}" class="btn btn-primary">
+                                <i class="bi bi-plus-circle"></i> Add New Author
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

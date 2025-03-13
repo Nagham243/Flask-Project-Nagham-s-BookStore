@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Book{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Add New Book</h3>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('books.add_book') }}" enctype="multipart/form-data">
+                    {{ form.hidden_tag() }}
+
+                    <div class="mb-3">
+                        {{ form.title.label(class="form-label") }}
+                        {{ form.title(class="form-control") }}
+                        {% if form.title.errors %}
+                        {% for error in form.title.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            {{ form.publish_date.label(class="form-label") }}
+                            {{ form.publish_date(class="form-control", type="date") }}
+                            {% if form.publish_date.errors %}
+                            {% for error in form.publish_date.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                            {% endfor %}
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form.price.label(class="form-label") }}
+                            {{ form.price(class="form-control", type="number", step="0.01") }}
+                            {% if form.price.errors %}
+                            {% for error in form.price.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                            {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            {{ form.appropriate.label(class="form-label") }}
+                            {{ form.appropriate(class="form-select") }}
+                            {% if form.appropriate.errors %}
+                            {% for error in form.appropriate.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                            {% endfor %}
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form.author.label(class="form-label") }}
+                            {{ form.author(class="form-select") }}
+                            {% if form.author.errors %}
+                            {% for error in form.author.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                            {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.cover_image.label(class="form-label") }}
+                        {{ form.cover_image(class="form-control") }}
+                        <div class="form-text">Upload a cover image for the book (optional).</div>
+                        {% if form.cover_image.errors %}
+                        {% for error in form.cover_image.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        {{ form.submit(class="btn btn-primary") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
